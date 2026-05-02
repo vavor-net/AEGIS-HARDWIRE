@@ -16,11 +16,11 @@ pub fn generate_secure_hash(previous_hash: &[u8], current_data: &[u8]) -> Vec<u8
     hasher.update(previous_hash);
     hasher.update(current_data);
     
-    // النتيجة يتم تخزينها في الذاكرة المحمية بفيوزات L0
+// The result is stored in memory protected by fuses L0
     hasher.finalize().to_vec()
 }
 
 pub fn verify_integrity(stored_hash: &[u8], calculated_hash: &[u8]) -> bool {
-    // مقارنة مادية سريعة: إذا اختلف بايت واحد، فهذا يعني محاولة اختراق سلوكي
+// Quick physical comparison: If even one byte is different, it indicates a behavioral hacking attempt.
     stored_hash == calculated_hash
 }
