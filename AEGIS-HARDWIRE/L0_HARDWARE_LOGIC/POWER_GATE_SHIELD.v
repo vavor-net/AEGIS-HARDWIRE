@@ -13,15 +13,15 @@
  */
 
 module POWER_GATE_SHIELD (
-    input  wire emergency_sensor,  // إشارة من مستشعر خطر مادي مستقل
-    input  wire watchdog_timeout,  // إشارة من "كلب الحراسة" في حال تجمد النظام
-    output wire burn_efuse_cmd,    // أمر حرق الفيوز (إشارة الجهد العالي)
-    output wire cut_main_power     // أمر قطع الطاقة الرئيسي
+    input  wire emergency_sensor,  // Signal from an independent physical hazard sensor
+    input  wire watchdog_timeout,  // A signal from the "guard dog" in case the system freezes
+    output wire burn_efuse_cmd,    // The command to blow the fuse (high voltage signal)
+    output wire cut_main_power     // Main power cut order
 );
 
-    // منطق الطوارئ: إذا استشعر المستشعر خطراً أو توقف النظام عن الاستجابة
-    // يتم تفعيل "بروتوكول التدمير الذاتي لمسار الطاقة"
-    
+    // // Emergency Logic: If the sensor detects a threat or the system stops responding
+   // The "Power Path Self-Destruct Protocol" is activated
+   
     assign burn_efuse_cmd = emergency_sensor | watchdog_timeout;
     assign cut_main_power = ~(emergency_sensor | watchdog_timeout);
 
