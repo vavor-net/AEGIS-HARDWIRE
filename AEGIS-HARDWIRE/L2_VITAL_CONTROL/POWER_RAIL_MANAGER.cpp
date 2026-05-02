@@ -15,12 +15,12 @@
 void monitor_energy_behavior() {
     float current_draw = read_power_sensor();
     
-    // إذا تجاوز استهلاك الطاقة الحدود الحيوية بشكل مريب
+// If energy consumption suspiciously exceeds vital limits
     if (current_draw > VITAL_LIMIT_THRESHOLD) {
-        // إرسال نبضة لـ L0 لحرق الفيوز المادي وقطع الكهرباء فوراً
+// Send a pulse to L0 to blow the physical fuse and cut off the electricity immediately
         trigger_hardware_burn_sequence(); 
         
-        // تسجيل الحدث في الذاكرة غير القابلة للمسح قبل انقطاع الطاقة
+// Recording the event in non-erasable memory before power failure
         log_vital_breach(current_draw);
     }
 }
