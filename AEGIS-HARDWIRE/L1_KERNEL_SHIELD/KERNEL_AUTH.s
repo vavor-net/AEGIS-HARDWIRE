@@ -13,14 +13,14 @@
 .global lock_safety_registers
 
 lock_safety_registers:
-    // تحميل عنوان مسجل الأمان المادي (الذي صممناه في L0)
-    LDR R0, =0x4000F000  // مثال لعنوان مسجل الفيوز
+    // Download Physical Security Registry Address (Which we designed in L0)
+    LDR R0, =0x4000F000  // Example of a fuse box address
     
-    // وضع قيمة "القفل" لمنع أي تعديل برمجى لاحق
+    // Set a "lock" value to prevent any subsequent software modifications.
     MOV R1, #0x1
     STR R1, [R0]
     
-    // تنفيذ أمر التجميد للمسجل (Hardware Lock)
+    // Execute the freeze order for the registrar (Hardware Lock)
     DSB                  // Data Synchronization Barrier
     ISB                  // Instruction Synchronization Barrier
-    BX LR                // العودة
+    BX LR                // Return
