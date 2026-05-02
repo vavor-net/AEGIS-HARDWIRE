@@ -16,13 +16,13 @@ pub struct ImmutableLogger {
 
 impl ImmutableLogger {
     pub fn write_event(&self, event_code: u32, payload: &[u8]) -> Result<(), String> {
-        // التحقق من أن مسار "فيوز الحماية من الكتابة" سليم
+// Verify that the "Write Protection Fuse" path is intact
         if !hardware_api::is_write_protected(self.base_address) {
-            // إذا كانت الذاكرة قابلة للمسح، نعتبر النظام غير آمن ونرفض التشغيل
+// If the memory is erasable, we consider the system insecure and refuse to operate.
             return Err("STORAGE_NOT_SECURE".to_string());
         }
 
-        // كتابة الحدث (بمجرد الكتابة، لا يمكن للـ AI مسحه ماديًا)
+// Writing the event (once written, the AI ​​cannot physically erase it)
         hardware_api::burn_to_storage(self.base_address, event_code, payload);
         Ok(())
     }
