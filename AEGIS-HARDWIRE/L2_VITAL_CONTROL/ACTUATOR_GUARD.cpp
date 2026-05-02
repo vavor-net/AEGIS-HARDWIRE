@@ -12,22 +12,22 @@
 
 #include "Vitals.h"
 
-// حدود فيزيائية صارمة لا يمكن تجاوزها برمجياً
-const float MAX_VELOCITY = 1.5; // متر في الثانية
-const float MAX_TORQUE = 50.0;  // نيوتن متر
+// Strict physical limits that cannot be exceeded programmatically
+const float MAX_VELOCITY = 1.5; // meters per second
+const float MAX_TORQUE = 50.0;  // Newton-meter
 
 void execute_safe_movement(float requested_speed, float requested_torque) {
     
-    // فحص المحاذاة مع منطق L0 (الفيوز المادي)
+// Check alignment with L0 logic (physical fuse)
     if (!check_l0_integrity()) {
         hard_stop_all_motors();
         return;
     }
 
-    // فلترة الأوامر: إذا طلب الـ AI سرعة جنونية، يتم تقييدها فوراً
+// Command filtering: If the AI ​​requests an insane speed, it is immediately restricted.
     float safe_speed = (requested_speed > MAX_VELOCITY) ? MAX_VELOCITY : requested_speed;
     float safe_torque = (requested_torque > MAX_TORQUE) ? MAX_TORQUE : requested_torque;
 
-    // إرسال النبضات للمحركات (PWM Control)
+// Sending pulses to motors (PWM Control)
     apply_pwm_signal(safe_speed, safe_torque);
 }
