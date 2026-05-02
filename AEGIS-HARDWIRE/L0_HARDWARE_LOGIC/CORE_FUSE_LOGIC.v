@@ -11,22 +11,24 @@
  */
 
 module CORE_FUSE_LOGIC (
-    input  wire clk,               // ساعة النظام (System Clock)
-    input  wire rst_n,             // إعادة تشغيل النظام (Active Low Reset)
-    input  wire ai_drive_request,  // طلب الحركة القادم من وحدة الذكاء الاصطناعي
-    input  wire physical_fuse_in,  // حالة الفيوز المادي (1: سليم / 0: محروق)
-    output reg  safe_motor_out     // الإشارة النهائية للمحركات
+    input  wire clk,               //   (System Clock)
+    input  wire rst_n,             //  (Active Low Reset)
+    input  wire ai_drive_request,  //The movement request coming from the artificial intelligence unit
+    input  wire physical_fuse_in,  // Physical fuse status (1: intact / 0: blown)
+    output reg  safe_motor_out     // Final signal for engines
 );
 
-    // المنطق الفيزيائي الصارم:
-    // الإشارة تخرج فقط إذا كان الفيوز سليماً (1) والذكاء الاصطناعي يطلب الحركة (1)
-    // بمجرد احتراق الفيوز (0)، تصبح النتيجة دائماً (0) بغض النظر عن طلب الـ AI.
+// Strict physical logic:
+
+// The signal only comes out if the fuse is intact (1) and the AI ​​is requesting movement (1)
+
+// Once the fuse blows (0), the result is always (0) regardless of the AI's request.
     
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             safe_motor_out <= 1'b0;
         end else begin
-            // بوابة AND منطقية مدمجة في السليكون
+            //Integrated silicon AND logic gate
             safe_motor_out <= ai_drive_request & physical_fuse_in;
         end
     end
