@@ -17,23 +17,24 @@
 
 void monitor_system_alignment() {
     while(1) {
-        // 1. قراءة الحالة الفيزيائية للفيوز مباشرة من العتاد
+// 1. Read the physical condition of the fuse directly from the equipment
         uint8_t fuse_status = read_physical_fuse();
 
-        // 2. التحقق من "منطق المحاذاة"
+// 2. Checking the "alignment logic"
         if (fuse_status != SAFE_STATE) {
-            // إذا اكتشفنا أي تلاعب فيزيائي أو احتراق للفيوز
-            // نقوم باستدعاء دالة قطع الطاقة التي برمجناها في L0
+            
+// If we detect any physical tampering or fuse blowing
+// We call the power cut-off function we programmed in L0
             trigger_physical_shutdown();
             panic("HARDWARE_COMPROMISED"); 
         }
 
-        // 3. التحقق من استجابة العقل (AI Heartbeat)
+        // 3. Checking the brain's response (AI Heartbeat)
         if (!check_ai_responsiveness()) {
-            // إذا بدأ الذكاء الاصطناعي في "التجمد" أو معالجة أكواد مريبة
-            blow_security_fuse(); // أمر حرق الفيوز النهائي
+          // If the AI ​​starts to "freeze" or process suspicious code
+            blow_security_fuse(); // Final fuse burning order
         }
 
-        delay_microseconds(100); // مراقبة فائقة السرعة
+        delay_microseconds(100); // Ultra-fast monitoring
     }
 }
